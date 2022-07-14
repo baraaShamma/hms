@@ -1,0 +1,77 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hms/logic/controllers/doctor/home_doctor_contrller.dart';
+import 'package:hms/logic/controllers/user/home_controller.dart';
+import 'package:hms/utils/theme.dart';
+class AppointmentsUser extends StatelessWidget {
+  AppointmentsUser({Key? key}) : super(key: key);
+  final controller = Get.find<HomeContoller>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      if (controller.isLoadingUserAppointments.value) {
+        return Center(
+          child: CircularProgressIndicator(
+            color: Get.isDarkMode ? pinkClr : mainColor,
+          ),
+        );
+      } else {
+        return SizedBox(
+            height: MediaQuery.of(context).size.height - 150,
+            child: ListView.builder(
+              itemCount: controller.userAppointmentsList.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  height: 150,
+                  width: MediaQuery.of(context).size.width,
+                  child: Card(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            // padding: EdgeInsets.only(top: 5),
+                            color: Colors.blue.shade50,
+                            height: 200,
+                            //alignment: Alignment.topRight,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "اسم المريض : " +
+                                      controller.userAppointmentsList[index]
+                                          .username,
+                                  style: const TextStyle(
+                                      fontSize: 25, color: Colors.black),
+                                ),
+                                const Text(
+                                  " الموعد : ",
+                                  style: TextStyle(
+                                      fontSize: 25, color: Colors.black),
+                                ),
+                                Directionality(
+                                  textDirection: TextDirection.ltr,
+                                  child: Text(
+                                    controller
+                                        .userAppointmentsList[index].date,
+                                    style: const TextStyle(
+                                        fontSize: 25, color: Colors.black),
+                                  ),
+                                ),
+
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ));
+      }
+    });
+  }
+}
